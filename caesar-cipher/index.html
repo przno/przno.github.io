@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="CaesarCipherApp">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<title>Caesar cipher</title>
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<!-- Angular -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+	<script src="caesar.js"></script>
+</head>
+
+<body data-ng-controller="CaesarCipherController">
+	<div class="container">
+		<h1>Caesar cipher</h1>
+
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings
+			</div>
+			<div class="panel-body">
+				<form class="form-horizontal" name="settingsForm">
+					<div class="form-group" data-ng-class="{'has-error': settingsForm.alphabet.$invalid}">
+						<label for="alphabet" class="col-sm-1 control-label">Alphabet</label>
+						<div class="col-sm-11">
+							<input type="text" class="form-control" data-ng-model="alphabet" id="alphabet" name="alphabet" aria-describedby="alphabet-help" required>
+						</div>
+					</div>
+
+					<div class="col-sm-offset-1 col-sm-11">
+						<small id="alphabet-help" class="help-block">You can use your own alphabet, for example if you need special characters like ô, ä, č, α, β, д, ф ... Make sure characters do not repeat!</small>
+					</div>
+
+					<div class="checkbox col-sm-offset-1 col-sm-11">
+						<label>
+							<input type="checkbox" data-ng-model="preserveNonAlphabetChars"> Any characters not listed in the alphabet will be preserved. If unchecked they will be removed from coded/decoded message.
+						</label>
+					</div>
+
+					<div class="checkbox col-sm-offset-1 col-sm-11">
+						<label>
+							<input type="checkbox" data-ng-model="caseSensitive"> Case sensitive? When checked the alphabet should be like <code>ABC..abc..</code>. When unchecked you're good to go with <code>ABC..</code> as alphabet.
+						</label>
+					</div>
+
+					<div class="form-group" data-ng-class="{'has-error': settingsForm.rotation.$invalid}">
+						<label for="rotation" class="col-sm-1 control-label">Rotation</label>
+						<div class="col-sm-1">
+							<input type="number" class="form-control" data-ng-model="rotation" step="1" id="rotation" name="rotation" aria-describedby="rotation-help" required>
+						</div>
+					</div>
+
+					<div class="col-sm-offset-1 col-sm-11">
+						<small id="rotation-help" class="help-block">Use negative number to rotate in oposite direction.</small>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<span class="glyphicon glyphicon-sort" aria-hidden="true"></span> Mapping based on settings
+			</div>
+			<div class="panel-body">
+				<div class="table-responsive">
+					<table class="table table-bordered table-condensed">
+						<tr>
+							<th>Plain</th>
+							<td class="text-center" data-ng-repeat="c in alphabet | chars">{{c}}</td>
+						</tr>
+						<tr>
+							<th></th>
+							<td class="text-center" data-ng-repeat="c in alphabet | chars"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></td>
+						</tr>
+						<tr>
+							<th>Cipher</th>
+							<td class="text-center" data-ng-repeat="c in alphabet | chars">{{code(c)}}</td>
+						</tr>
+					</table>
+				</div>
+
+				<div class="table-responsive">
+					<table class="table table-bordered table-condensed">
+						<tr>
+							<th>Cipher</th>
+							<td class="text-center" data-ng-repeat="c in alphabet | chars">{{c}}</td>
+						</tr>
+						<tr>
+							<th></th>
+							<td class="text-center" data-ng-repeat="c in alphabet | chars"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></td>
+						</tr>
+						<tr>
+							<th>Plain</th>
+							<td class="text-center" data-ng-repeat="c in alphabet | chars">{{decode(c)}}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="panel panel-success">
+			<div class="panel-heading">
+				<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Message
+			</div>
+			<div class="panel-body">
+				<form class="form-horizontal" name="messageForm">
+					<div class="form-group">
+						<label for="message" class="col-sm-1 control-label">Your message</label>
+						<div class="col-sm-11">
+							<textarea class="form-control" data-ng-model="message" rows="2" id="message" name="message" placeholder="Write here. It will be both coded and decoded. Pick what you need."></textarea>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="message-coded" class="col-sm-1 control-label">Message coded</label>
+						<div class="col-sm-11">
+							<textarea class="form-control" rows="2" id="message-coded" name="message-coded" readonly>{{code(message)}}</textarea>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="message-decoded" class="col-sm-1 control-label">Message decoded</label>
+						<div class="col-sm-11">
+							<textarea class="form-control" rows="2" id="message-decoded" name="message-decoded" readonly>{{decode(message)}}</textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+</html>

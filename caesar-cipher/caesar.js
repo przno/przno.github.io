@@ -74,8 +74,11 @@ app.controller('CaesarCipherController', function CaesarCipherController($scope,
         if(currentValue.isLowerCase()){
           letter = alphabetRotated[position].toLowerCase();
         }
-        if(currentValue.isUpperCase()){
+        else if(currentValue.isUpperCase()){
           letter = alphabetRotated[position].toUpperCase();
+        }
+        else { // neither lower or upper case, e.g. a number, special char, etc.
+          letter = alphabetRotated[position];
         }
       }
 
